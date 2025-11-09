@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Guia JS Completo - Manipulação do DOM</title>
+    <link rel="stylesheet" href="./css/style.css" />
+
+    <script>
+        const savedTheme = localStorage.getItem("themePreference");
+        if (savedTheme === "dark") {
+            document.documentElement.classList.add("dark-mode");
+            document.body.classList.add("dark-mode");
+        }
+    </script>
+</head>
+
+<body>
+    <header>
+        <h1>Guia Completo de JavaScript</h1>
+        <p>Aprenda a tornar suas páginas dinâmicas e interativas com o JS.</p>
+
+        <form action="https://www.google.com/search" method="get" target="_blank" class="search-form">
+            <label for="search-box" class="sr-only">Pesquisar Tópicos JS</label>
+            <input type="search" id="search-box" name="q" placeholder="Pesquisar DOM, Eventos, Funções..." required />
+            <input type="hidden" name="as_q" value="JavaScript DOM Eventos Funções" />
+            <button type="submit">🔍 Buscar</button>
+        </form>
+
+        <button id="darkModeToggle">Mudar Tema</button>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="index.html">⬅️ Guia HTML</a></li>
+            <li><a href="css.html">⬅️ Guia CSS</a></li>
+            <li class="separator">|</li>
+
+            <li><a href="#dom-selecao">Seleção de Elementos</a></li>
+            <li><a href="#dom-manipulacao">Manipulação (Mudar Conteúdo)</a></li>
+            <li><a href="#eventos">Eventos e Interação</a></li>
+            <li><a href="#funcoes">Funções e Lógica</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <section id="js-intro" class="tag-explicacao">
+            <h2>O que é o JavaScript?</h2>
+            <p>
+                O JavaScript é a linguagem de programação da web. Ele transforma
+                páginas estáticas (HTML/CSS) em aplicações interativas. Sua principal
+                função é manipular o **DOM** (Document Object Model).
+            </p>
+            <p>
+                **DOM:** É uma interface de programação para documentos HTML e XML.
+                Ele representa a estrutura de um documento como uma árvore de objetos,
+                permitindo que programas (como o JS) mudem a estrutura, o estilo e o
+                conteúdo.
+            </p>
+        </section>
+
+        <section id="dom-selecao">
+            <h2>1. Seleção de Elementos (A Base do DOM)</h2>
+            <p>
+                Antes de mudar um elemento, o JavaScript precisa encontrá-lo. O DOM
+                fornece vários métodos para selecionar elementos.
+            </p>
+
+            <article class="tag-explicacao">
+                <h3>Métodos de Seleção Antigos (por ID e Tag)</h3>
+                <p>Estes são rápidos e úteis, mas menos flexíveis:</p>
+                <ul>
+                    <li>
+                        `document.getElementById('ID')`: Retorna o elemento único que
+                        possui aquele `id`.
+                    </li>
+                    <li>
+                        `document.getElementsByTagName('tag')`: Retorna uma coleção
+                        (lista) de todos os elementos com aquela tag (ex: 'p', 'div').
+                    </li>
+                    <li>
+                        `document.getElementsByClassName('classe')`: Retorna uma coleção
+                        de todos os elementos que possuem aquela `class`.
+                    </li>
+                </ul>
+                <pre><code>// Seleciona o elemento único com ID="botao"
+const meuBotao = document.getElementById('botao'); </code></pre>
+            </article>
+
+            <article class="tag-explicacao">
+                <h3>Métodos Modernos (Query Selectors)</h3>
+                <p>
+                    Estes métodos são mais flexíveis, pois aceitam qualquer seletor de
+                    CSS (tag, #id, .classe, ou pseudo-classe).
+                </p>
+                <ul>
+                    <li>
+                        `document.querySelector('seletor')`: Retorna o **primeiro**
+                        elemento que corresponde ao seletor CSS fornecido.
+                        <pre><code>// Seleciona o primeiro &lt;h1&gt;
+const titulo = document.querySelector('h1');
+
+// Seleciona o botão dentro do cabeçalho
+const btnBusca = document.querySelector('header .search-form button');</code></pre>
+                    </li>
+                    <li>
+                        `document.querySelectorAll('seletor')`: Retorna uma **NodeList**
+                        (lista estática) de **todos** os elementos que correspondem ao
+                        seletor.
+                        <pre><code>// Seleciona todos os parágrafos dentro de uma seção
+const paragrafos = document.querySelectorAll('#minha-secao p');</code></pre>
+                    </li>
+                </ul>
+                <p>
+                    <strong>Melhor Prática:</strong> Use `querySelector` e
+                    `querySelectorAll` na maioria das vezes, pois são mais versáteis.
+                </p>
+            </article>
+        </section>
+
+        <section id="dom-manipulacao">
+            <h2>2. Manipulação de Elementos (Mudar Conteúdo e Estilo)</h2>
+            <p>
+                Depois de selecionar um elemento com o DOM, o JavaScript usa
+                propriedades e métodos para alterar seu conteúdo, seus atributos ou
+                sua aparência (estilo).
+            </p>
+
+            <article class="tag-explicacao">
+                <h3>Propriedades de Conteúdo</h3>
+                <p>Controlam o texto e o HTML dentro de um elemento.</p>
+                <ul>
+                    <li>
+                        `textContent`: Define ou retorna **somente o texto** contido no
+                        elemento (ignora qualquer tag HTML).
+                        <pre><code>// Muda o texto dentro do &lt;p&gt;
+document.querySelector('p').textContent = 'O novo texto do parágrafo.';</code></pre>
+                    </li>
+                    <li>
+                        `innerHTML`: Define ou retorna o **conteúdo HTML** completo dentro
+                        do elemento (inclui tags).
+                        <pre><code>// Adiciona HTML (texto em negrito) dentro do &lt;div&gt;
+document.getElementById('container').innerHTML = 'Aqui está um &lt;strong&gt;texto importante&lt;/strong&gt;.';</code></pre>
+                    </li>
+                    <li>
+                        `value`: Usado para obter ou definir o conteúdo de elementos de
+                        formulário (`&lt;input&gt;`, `&lt;textarea&gt;`,
+                        `&lt;select&gt;`).
+                        <pre><code>// Obtém o que o usuário digitou no campo
+const inputTexto = document.getElementById('nome').value;</code></pre>
+                    </li>
+                </ul>
+            </article>
+
+            <article class="tag-explicacao">
+                <h3>Manipulação de Estilo (CSS)</h3>
+                <p>
+                    A propriedade `.style` permite modificar estilos CSS diretamente no
+                    JS (aplicando estilos inline).
+                </p>
+                <p>
+                    ⚠ **Melhor Prática:** É sempre preferível mudar classes CSS (veja
+                    abaixo) do que usar `.style`.
+                </p>
+                <pre><code>const titulo = document.querySelector('h1');
+// Mudança direta: (use camelCase para propriedades com hífen)
+titulo.style.color = 'blue';
+titulo.style.backgroundColor = '#f0f0f0';
+titulo.style.fontSize = '30px'; </code></pre>
+            </article>
+
+            <article class="tag-explicacao">
+                <h3>Manipulação de Classes (A Melhor Prática)</h3>
+                <p>
+                    A melhor maneira de mudar a aparência de um elemento é alterar suas
+                    classes CSS, usando a propriedade `.classList`.
+                </p>
+                <ul>
+                    <li>
+                        `element.classList.add('classe')`: Adiciona uma nova classe ao
+                        elemento.
+                    </li>
+                    <li>
+                        `element.classList.remove('classe')`: Remove uma classe existente.
+                    </li>
+                    <li>
+                        `element.classList.toggle('classe')`: Se a classe existir, ele
+                        remove; se não existir, ele adiciona (perfeito para botões de
+                        liga/desliga, como o Dark Mode!).
+                    </li>
+                    <li>
+                        `element.classList.contains('classe')`: Verifica se o elemento
+                        possui a classe (retorna `true` ou `false`).
+                    </li>
+                </ul>
+                <pre><code>const card = document.getElementById('card-info');
+
+// Adiciona a classe 'ativo' para aplicar novos estilos do CSS
+card.classList.add('ativo'); 
+
+// Inverte a classe 'escondido'
+card.classList.toggle('escondido'); </code></pre>
+            </article>
+
+            <article class="tag-explicacao">
+                <h3>Manipulação de Atributos</h3>
+                <p>
+                    Permite mudar atributos HTML, como `src` de uma imagem ou `href` de
+                    um link.
+                </p>
+                <ul>
+                    <li>
+                        `element.setAttribute('atributo', 'valor')`: Define um novo
+                        atributo ou muda o valor de um existente.
+                    </li>
+                    <li>
+                        `element.getAttribute('atributo')`: Obtém o valor atual de um
+                        atributo.
+                    </li>
+                </ul>
+                <pre><code>const imagem = document.querySelector('img');
+
+// Mudar a fonte da imagem
+imagem.setAttribute('src', 'nova-imagem.jpg'); 
+
+// Adicionar um atributo de acessibilidade
+imagem.setAttribute('alt', 'Descrição da nova imagem'); </code></pre>
+            </article>
+        </section>
+
+        <section id="eventos">
+            <h2>3. Eventos e Interação com o Usuário</h2>
+            <p>
+                Eventos são ações que ocorrem em um elemento HTML (ou no navegador)
+                que o JavaScript pode detectar e reagir. Todo o comportamento
+                interativo da web é construído com base neles.
+            </p>
+
+            <article class="tag-explicacao">
+                <h3>Sintaxe: Adicionar um Listener (Ouvinte)</h3>
+                <p>
+                    O método principal para lidar com eventos é
+                    <code>addEventListener()</code>, pois permite anexar múltiplas
+                    funções a um único evento, sem sobrescrever outras.
+                </p>
+
+                <h4>Estrutura do Listener:</h4>
+                <pre><code>elemento.addEventListener('evento', funcaoParaExecutar);</code></pre>
+
+                <p>Onde:</p>
+                <ul>
+                    <li>
+                        **`elemento`**: O elemento DOM que detectará a ação (ex: um botão,
+                        a página, o corpo).
+                    </li>
+                    <li>
+                        **`evento`**: Uma string que especifica o tipo de evento (ex:
+                        'click', 'mouseover', 'submit').
+                    </li>
+                    <li>
+                        **`funcaoParaExecutar`**: A função JavaScript que será chamada
+                        quando o evento ocorrer.
+                    </li>
+                </ul>
+                <pre><code>// 1. Seleciona o botão
+const botaoAcao = document.querySelector('#meuBotao');
+
+// 2. Anexa o evento de 'click'
+botaoAcao.addEventListener('click', function() {
+    alert('O botão foi clicado!');
+});</code></pre>
+            </article>
+
+            <article class="tag-explicacao">
+                <h3>Eventos Comuns do DOM</h3>
+                <p>Estes são os eventos que você mais usará:</p>
+
+                <h4>Eventos de Mouse:</h4>
+                <ul>
+                    <li>`click`: Quando o elemento é clicado (o mais comum).</li>
+                    <li>`mouseover`: Quando o ponteiro do mouse entra no elemento.</li>
+                    <li>`mouseout`: Quando o ponteiro do mouse sai do elemento.</li>
+                </ul>
+
+                <h4>Eventos de Formulário:</h4>
+                <ul>
+                    <li>
+                        `submit`: Quando um formulário é enviado (usado para validação).
+                    </li>
+                    <li>
+                        `change`: Quando o valor de um campo de formulário muda (ex: um
+                        select).
+                    </li>
+                    <li>
+                        `input`: Quando o valor de um campo de texto muda (em tempo real).
+                    </li>
+                </ul>
+                <pre><code>const formCadastro = document.querySelector('form');
+
+formCadastro.addEventListener('submit', function(e) {
+    e.preventDefault(); // Impede o comportamento padrão de envio da página
+    console.log('Formulário interceptado pelo JS.');
+});</code></pre>
+
+                <h4>Eventos de Teclado:</h4>
+                <ul>
+                    <li>`keydown`: Quando uma tecla é pressionada.</li>
+                    <li>`keyup`: Quando uma tecla é liberada.</li>
+                </ul>
+
+                <h4>Eventos de Documento/Janela:</h4>
+                <ul>
+                    <li>
+                        `DOMContentLoaded`: Disparado quando o HTML foi totalmente
+                        carregado e analisado (útil para garantir que o JS funcione).
+                    </li>
+                    <li>`scroll`: Disparado quando o usuário rola a página.</li>
+                    <li>
+                        `resize`: Disparado quando o tamanho da janela do navegador muda
+                        (útil para responsividade em JS).
+                    </li>
+                </ul>
+            </article>
+        </section>
+
+        <section id="funcoes">
+            <h2>4. Funções e Lógica Básica</h2>
+            <p>
+                Funções e lógica (como condicionais e loops) são o que permite ao
+                JavaScript executar tarefas complexas de forma organizada e eficiente,
+                tomando decisões sobre o que fazer em seguida.
+            </p>
+
+            <article class="tag-explicacao">
+                <h3>Funções (Agrupamento de Código)</h3>
+                <p>
+                    Funções são blocos de código reutilizáveis que só são executados
+                    quando são chamados. Isso evita a repetição de código.
+                </p>
+
+                <h4>Sintaxe Clássica (Function Declaration):</h4>
+                <pre><code>function saudarUsuario(nome) {
+    // 'nome' é um parâmetro (valor que a função precisa para funcionar)
+    return `Olá, ${nome}! Bem-vindo ao guia.`; // 'return' devolve um valor
+}
+
+// Chamar a função
+const mensagem = saudarUsuario('Chronos'); // A função executa
+console.log(mensagem); // Saída: Olá, Chronos! Bem-vindo ao guia.</code></pre>
+
+                <h4>Arrow Functions (Sintaxe Moderna):</h4>
+                <p>Uma forma mais concisa de escrever funções, muito popular hoje.</p>
+                <pre><code>const somar = (a, b) => {
+    return a + b;
+};
+
+const resultado = somar(5, 3); // 8</code></pre>
+            </article>
+
+            <article class="tag-explicacao">
+                <h3>Condicionais (`if`, `else if`, `else`)</h3>
+                <p>
+                    Permitem que o código tome decisões com base em condições booleanas
+                    (`true` ou `false`).
+                </p>
+                <pre><code>let tema = localStorage.getItem('themePreference');
+
+if (tema === 'dark') {
+    // Se a condição for verdadeira, executa este bloco
+    console.log("Aplicando o tema escuro.");
+} else if (tema === 'light') {
+    // Se a primeira for falsa e esta for verdadeira, executa este
+    console.log("Aplicando o tema claro.");
+} else {
+    // Se nenhuma das condições anteriores for verdadeira, executa este
+    console.log("Tema padrão será usado.");
+}</code></pre>
+            </article>
+
+            <article class="tag-explicacao">
+                <h3>Operador Ternário (Condicional Curta)</h3>
+                <p>
+                    Uma forma abreviada de escrever uma instrução `if/else` simples em
+                    uma única linha.
+                </p>
+                <pre><code>// Estrutura: Condição ? ValorSeVerdadeiro : ValorSeFalso
+const idade = 20;
+const status = (idade >= 18) ? 'Adulto' : 'Menor de Idade';
+
+console.log(status); // Saída: Adulto</code></pre>
+            </article>
+
+            <article class="tag-explicacao">
+                <h3>Loops (`for`)</h3>
+                <p>
+                    Usados para executar um bloco de código repetidamente, muito comum
+                    ao iterar sobre listas de elementos ou arrays.
+                </p>
+                <pre><code>// Itera sobre todos os links da lista (NodeList)
+const links = document.querySelectorAll('nav a');
+
+for (let i = 0; i < links.length; i++) {
+    links[i].style.color = 'orange'; // Estiliza cada link individualmente
+}</code></pre>
+            </article>
+        </section>
+    </main>
+
+    <button id="btnTopo" onclick="scrollToTop()" title="Voltar ao Topo">
+        ⬆️ Topo da Página
+    </button>
+
+    <footer>
+        <p>© 2025 - Guia JS - Chronos Dev</p>
+    </footer>
+
+    <script src="./js/script.js"></script>
+</body>
+
+</html>

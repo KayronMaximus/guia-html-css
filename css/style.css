@@ -230,8 +230,8 @@ pre {
 
 /* 1. MUDANÇA GLOBAL (BODY) */
 .dark-mode {
-  background-color: #121212; /* Fundo muito escuro */
-  color: #e0e0e0; /* Texto claro */
+    background-color: #1f1f1f; /* Fundo principal escuro */
+    color: #e0e0e0; /* GARANTE QUE O TEXTO PRINCIPAL SEJA CLARO */
 }
 
 /* 2. MUDANÇA DOS CONTÊINERES BRANCOS */
@@ -250,13 +250,26 @@ pre {
 }
 
 /* 3. MUDANÇA DE SEÇÕES DE CONTEÚDO (EXPLICAÇÕES) */
+/* REGRAS PARA ELEMENTOS ESPECÍFICOS NO DARK MODE */
+
+/* Garante que o fundo das caixas de conteúdo seja escuro, e o texto seja CLARO */
 .dark-mode .tag-explicacao {
-  background-color: #2b2b2b;
-  border-color: #3d3d3d;
+    background-color: #2b2b2b;
+    border-color: #3d3d3d;
+    color: #e0e0e0 !important; /* Adicione !important temporariamente para teste se a cor não resolver, mas evite em produção */
 }
 
-.dark-mode .tag-explicacao h3 {
-  color: #66b3ff; /* Azul mais claro para títulos em Dark Mode */
+/* Garante que o texto dos parágrafos e listas seja CLARO */
+.dark-mode .tag-explicacao p,
+.dark-mode .tag-explicacao ul,
+.dark-mode .tag-explicacao li {
+    color: #e0e0e0;
+}
+
+/* Garante que todos os títulos H2 e H3 sejam CLAROS */
+.dark-mode h2,
+.dark-mode h3 {
+    color: #f0f0f0;
 }
 
 /* 4. MUDANÇA DE CÓDIGO E BLOCOS PRE */
